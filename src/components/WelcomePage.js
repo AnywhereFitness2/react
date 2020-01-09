@@ -1,6 +1,27 @@
-// Navbar
-//  -Instuctor Button
-//  -Client Button
-//  -register button
+import React from "react";
 
-//  Render the login form
+const WelcomePage = props => {
+  return (
+    <div>
+      <div>
+        <h1>Anywhere Fitness</h1>
+        <h3>Workout AnyWhere</h3>
+        <button
+          className='welcomeBtn'
+          onClick={() => props.history.push("/register")}
+        >
+          Register
+        </button>
+        <p>Already Have an Account?</p>
+        <button
+          className='welcomeLogBtn2'
+          onClick={() => props.history.push("/login")}
+        >
+          Login
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default WelcomePage;
