@@ -5,7 +5,7 @@ import { userContext } from "../contexts/userContext";
 
 const initialLoginState = {
   username: "",
-  passworkd: ""
+  password: ""
 };
 
 const Login = props => {
@@ -17,11 +17,11 @@ const Login = props => {
     e.preventDefault();
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
-
+  console.log({ loginData });
   const handleSubmit = e => {
     e.preventDefault();
     axiosWithAuth()
-      .post("/auth/login", loginData)
+      .post("/api/auth/login", loginData)
       .then(res => {
         console.log(res);
         setUser();
@@ -41,7 +41,7 @@ const Login = props => {
           id='username'
           type='text'
           placeholder='username'
-          value={loginData.username}
+          // value={loginData.username}
         />
 
         <label htmlFor='password'>Password</label>
@@ -51,7 +51,7 @@ const Login = props => {
           id='password'
           type='password'
           placeholder='password'
-          value={loginData.password}
+          // value={loginData.password}
         />
 
         <button>Sign In</button>
