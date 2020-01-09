@@ -3,7 +3,7 @@ import React from "react";
 import { userContext } from "../../contexts/userContext";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
 
-const UserProvider = ({ children }) => {
+export const UserProvider = ({ children }) => {
   const [user, setUser] = useLocalStorage("");
   return (
     <userContext.Provider value={{ user, setUser }}>
@@ -11,5 +11,3 @@ const UserProvider = ({ children }) => {
     </userContext.Provider>
   );
 };
-
-export default UserProvider;

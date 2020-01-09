@@ -8,22 +8,26 @@ const initialUser = {
   first_name: "",
   last_name: "",
   city: "",
-  email: ""
+  email: "",
+  experience: ""
 };
 
 const Register = props => {
-  const [registerData, setRegisterData] = useState(initialUser);
+  const [registrationData, setRegistrationData] = useState(initialUser);
 
   const handleChange = e => {
-    setRegisterData({ ...registerData, [e.target.name]: e.target.value });
+    setRegistrationData({
+      ...registrationData,
+      [e.target.name]: e.target.value
+    });
   };
 
   const handleSubmit = e => {
     e.preventDefault();
     axiosWithAuth()
-      .post("/auth/register", registerData)
+      .post("/auth/register", registrationData)
       .then(res => {
-        console.log(res);
+        console.log(res.data);
       })
       .catch(err => {
         console.log(err);
@@ -40,7 +44,7 @@ const Register = props => {
           id='username'
           name='username'
           placeholder='username'
-          value={registerData.username}
+          value={registrationData.username}
           required
         />
 
@@ -51,7 +55,7 @@ const Register = props => {
           id='password'
           name='password'
           placeholder='password'
-          value={registerData.password}
+          value={registrationData.password}
           required
         />
 
@@ -62,7 +66,7 @@ const Register = props => {
           id='firstName'
           name='first_name'
           placeholder='first name'
-          value={registerData.first_name}
+          value={registrationData.first_name}
           required
         />
 
@@ -73,7 +77,7 @@ const Register = props => {
           name='last_name'
           id='lastName'
           placeholder='last name'
-          value={registerData.last_name}
+          value={registrationData.last_name}
           required
         />
 
@@ -84,7 +88,7 @@ const Register = props => {
           name='city'
           id='city'
           placeholder='city'
-          value={registerData.city}
+          value={registrationData.city}
           required
         />
 
@@ -95,14 +99,25 @@ const Register = props => {
           name='email'
           id='email'
           placeholder='email'
-          value={registerData.email}
+          value={registrationData.email}
+          required
+        />
+
+        <label htmlFor='level'>Fitness Level</label>
+        <input
+          onChange={handleChange}
+          type='level'
+          name='level'
+          id='level'
+          placeholder='fitness level'
+          value={registrationData.email}
           required
         />
 
         <button>Submit</button>
         <button
           className='loginBtn'
-          onClick={() => setRegisterData(initialUser)}
+          onClick={() => setRegistrationData(initialUser)}
         >
           Reset
         </button>
