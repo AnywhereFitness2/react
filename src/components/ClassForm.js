@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
 import styled, {css} from 'styled-components';
-const Form = styled.form`
-display: flex;
-flex-direction: column;
-justify-content: center;
-border: 1px solid black;
-`;
-const Label = styled.label`
-text-align: left;
-`;
+import Button from '@material-ui/core/Button';
+import axios from 'axios';
+
+// const Form = styled.form`
+// display: flex;
+// flex-direction: column;
+// justify-content: space-between;
+// border: 1px solid black;
+// `;
+// const Label = styled.label`
+// text-align: initial ;
+// // border: 1px solid black;
+// padding-right: 2px; 
+// .align {
+//     text-align: left;
+// }
+// `;
+
+
 export default function ClassForm () {
     const [classtributes, setClasstributes]= useState({className: '', classType:'', startTime: '', duration: '', intensityLevel: '', location: '', numberOfAttendees: '', maxClassSize: ''});
     const handleChanges = event => {
@@ -17,13 +27,20 @@ export default function ClassForm () {
         console.log(classtributes);
     }; 
     const onSubmit = event =>  {
-        event.preventDefault();        
+        event.preventDefault(); 
+        axios.post('/api/classes', classtributes)
+        .then(response=> {
+        console.log(response);        
+        })       
+        .catch(error=> console.log(error));
+    
         setClasstributes({className: '', classType:'', startTime: '', duration: '', intensityLevel: '', location: '', numberOfAttendees: '', maxClassSize: ''})
     }
     return (
-        <Form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} >
+           
             <div className= 'name'  >
-                <Label>Name: </Label>
+                <label className= 'align'>Name: </label>
                 <input                
                     type='text' 
                     placeholder= 'enter name' 
@@ -33,7 +50,7 @@ export default function ClassForm () {
                     />
             </div>
             <div className= 'type'>
-                <Label>Type: </Label>
+                <label className= 'align'>Type: </label>
                 <input                 
                     type='text'
                     placeholder= 'Class Type'
@@ -43,7 +60,7 @@ export default function ClassForm () {
                     />
             </div>
             <div className= 'startTime'>
-                <label>Start Time: </label>
+                <label className= 'align'>Start Time: </label>
                 <input             
                     type='text'
                     placeholder= 'Start Time'    
@@ -53,7 +70,7 @@ export default function ClassForm () {
                 />
             </div>
             <div className= 'duration'>
-                <label>Duration: </label>
+                <label className= 'align'>Duration: </label>
                 <input              
                     type='text'
                     placeholder= 'Duration'    
@@ -63,7 +80,7 @@ export default function ClassForm () {
                 />
             </div>
             <div>
-                <label>Location: </label>
+                <label className= 'align'>Location: </label>
                 <input               
                     type='text'
                     placeholder= 'Location'    
@@ -73,7 +90,7 @@ export default function ClassForm () {
                 />
             </div>
             <div>
-                <label>Attendees: </label>
+                <label className= 'align'>Attendees: </label>
                 <input                 
                     type='text'
                     placeholder= 'Number of  Attendees'    
@@ -83,7 +100,7 @@ export default function ClassForm () {
                 />
             </div>
             <div>
-                <label>Max Class Size: </label>
+                <label className= 'align'>Max Class Size: </label>
                 <input                 
                     type='text'
                     placeholder= 'Max Class Size'    
@@ -91,9 +108,9 @@ export default function ClassForm () {
                     name= 'maxClassSize'
                     value= {classtributes.maxClassSize}
                 /> 
-                </div>
+            </div>
             <div>
-                <label>Intensity: </label>
+                <label className= 'align'>Intensity: </label>
                 <input                 
                     type='text'
                     placeholder= 'Intensity Level'    
@@ -103,8 +120,10 @@ export default function ClassForm () {
                 />
             </div>
             <div>
-            <button className= "submitButton" type= "submit">Click Here to Submit</button>
+                    <Button variant="contained" color="primary">Submit</Button>
+
+                {/* <button className= "submitButton" type= "submit"> </button> */}
             </div>
-        </Form>
+        </form>
             )
         }
