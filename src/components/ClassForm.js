@@ -106,7 +106,8 @@ export default function ClassForm () {
             </div>
             <div>
                 <label className= 'align'></label>                
-                    <TextField                 
+                    <TextField 
+                        id='inputField'                
                         type='text'
                         placeholder= 'Max Class Size'    
                         onChange= {handleChanges}
@@ -116,7 +117,8 @@ export default function ClassForm () {
             </div>
             <div>
                 <label className= 'align'></label>                
-                    <TextField               
+                    <TextField    
+                        id='inputField'           
                         type='text'
                         placeholder= '# of Attendees'    
                         onChange= {handleChanges}
@@ -125,6 +127,7 @@ export default function ClassForm () {
                     />                
             </div>
             <div>
+                <br></br>
                 <Button 
                     variant="contained" 
                     color="primary"
