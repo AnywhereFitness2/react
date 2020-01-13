@@ -9,6 +9,7 @@ const Class = () => {
         .then(response => {
             console.log(response)
             setGetClass(response.data);
+            
         })
         .catch(error=> console.log(error));
     }, [])
