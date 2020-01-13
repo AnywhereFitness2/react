@@ -5,7 +5,7 @@ import axios from 'axios';
 const Class = () => {
     const [getClass, setGetClass]= useState([]);
     useEffect(() => {
-        axios.get('https://anywhere-fitness-be.herokuapp.com/api/classes')
+        axios.get('https://anywhere-fitness-be.herokuapp.com/api/class')
         .then(response => {
             console.log(response)
             setGetClass(response.data);

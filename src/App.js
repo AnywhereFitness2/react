@@ -10,6 +10,7 @@ function App() {
     <div className='App'>
       <Router>
         <Link to='/classform'>Add a Class</Link>
+        <Link to='/class'>Go to your classes</Link>
         <Switch>
           {/* <Route path='/register' component={Register} /> */}
           {/* <Route path='/login' component={Login} /> */}
