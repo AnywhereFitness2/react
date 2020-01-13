@@ -2,6 +2,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
 import ClassForm from "./components/ClassForm";
+import Class from "./components/Class";
 import "./App.css";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           {/* <Route path='/register' component={Register} /> */}
           {/* <Route path='/login' component={Login} /> */}
           <Route path='/classform' component={ClassForm} />
+          <Route path='/class' component={Class} />
         </Switch>
       </Router>
     </div>

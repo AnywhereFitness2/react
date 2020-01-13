@@ -1,22 +1,8 @@
 import React, { useState } from 'react';
-import styled, {css} from 'styled-components';
 import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField'
 import axios from 'axios';
 
-// const Form = styled.form`
-// display: flex;
-// flex-direction: column;
-// justify-content: space-between;
-// border: 1px solid black;
-// `;
-// const Label = styled.label`
-// text-align: initial ;
-// // border: 1px solid black;
-// padding-right: 2px; 
-// .align {
-//     text-align: left;
-// }
-// `;
 
 
 export default function ClassForm () {
@@ -28,99 +14,124 @@ export default function ClassForm () {
     }; 
     const onSubmit = event =>  {
         event.preventDefault(); 
-        axios.post('/api/classes', classtributes)
+        axios.post('https://anywhere-fitness-be.herokuapp.com/api/classes', classtributes)
         .then(response=> {
         console.log(response);        
         })       
-        .catch(error=> console.log(error));
+        .catch(error=> console.log(error), []);
     
         setClasstributes({className: '', classType:'', startTime: '', duration: '', intensityLevel: '', location: '', numberOfAttendees: '', maxClassSize: ''})
     }
     return (
         <form onSubmit={onSubmit} >
            
-            <div className= 'name'  >
-                <label className= 'align'>Name: </label>
-                <input                
-                    type='text' 
-                    placeholder= 'enter name' 
-                    onChange= {handleChanges}
-                    name="name"
-                    value= {classtributes.name}
-                    />
+            <div className= 'name'  >           
+                <label className= 'align'></label>                           
+                    <TextField      
+                        placeholder='Class Name'                 
+                        id='inputField'
+                        type='text'                        
+                        margin='normal'
+                        onChange={handleChanges}
+                        name= 'className'
+                        value= {classtributes.className}
+                    />              
             </div>
             <div className= 'type'>
-                <label className= 'align'>Type: </label>
-                <input                 
+                <label className= 'align'></label>             
+                
+                <TextField
+                    id='inputField'
                     type='text'
-                    placeholder= 'Class Type'
-                    onChange= {handleChanges}
+                    placeholder='Class Type'
+                    margin='normal'
+                    onChange={handleChanges}
                     name= 'classType'
-                    value= {classtributes.classType}
-                    />
+                    value= {classtributes.classType}                
+                />                     
             </div>
             <div className= 'startTime'>
-                <label className= 'align'>Start Time: </label>
-                <input             
+                <label className= 'align'></label>
+                
+                <TextField
+                    id='inputField'
                     type='text'
-                    placeholder= 'Start Time'    
-                    onChange= {handleChanges}
+                    placeholder='Start Time'
+                    margin='normal'
+                    onChange={handleChanges}
                     name= 'startTime'
                     value= {classtributes.startTime}
-                />
+                />                
             </div>
             <div className= 'duration'>
-                <label className= 'align'>Duration: </label>
-                <input              
-                    type='text'
-                    placeholder= 'Duration'    
-                    onChange= {handleChanges}
-                    name= 'duration'
-                    value= {classtributes.duration}
-                />
+                <label className= 'align'></label>
+                                   
+                    <TextField
+                        id='inputField'
+                        type='text'
+                        placeholder='Duration'
+                        margin='normal'
+                        onChange={handleChanges}
+                        name= 'duration'
+                        value= {classtributes.duration}                        
+                    />             
             </div>
             <div>
-                <label className= 'align'>Location: </label>
-                <input               
+                <label className= 'align'></label>
+                
+                <TextField
+                    id='inputField'
                     type='text'
-                    placeholder= 'Location'    
-                    onChange= {handleChanges}
+                    placeholder='Intensity Level'
+                    margin='normal'
+                    onChange={handleChanges}
+                    name= 'intensityLevel'
+                    value= {classtributes.intensityLevel}
+                />  
+                             
+            </div>
+            <div>
+                <label className= 'align'></label>
+                
+                <TextField
+                    id='inputField'
+                    type='text'
+                    placeholder='Location'
+                    margin='normal'
+                    onChange={handleChanges}
                     name= 'location'
                     value= {classtributes.location}
                 />
+                
             </div>
             <div>
-                <label className= 'align'>Attendees: </label>
-                <input                 
-                    type='text'
-                    placeholder= 'Number of  Attendees'    
-                    onChange= {handleChanges}
-                    name= 'numberOfAttendees'
-                    value= {classtributes.currentNumberOfAttendees}
-                />
+                <label className= 'align'></label>                
+                    <TextField                 
+                        type='text'
+                        placeholder= 'Max Class Size'    
+                        onChange= {handleChanges}
+                        name= 'maxClassSize'
+                        value= {classtributes.maxClassSize}
+                    />                 
             </div>
             <div>
-                <label className= 'align'>Max Class Size: </label>
-                <input                 
-                    type='text'
-                    placeholder= 'Max Class Size'    
-                    onChange= {handleChanges}
-                    name= 'maxClassSize'
-                    value= {classtributes.maxClassSize}
-                /> 
+                <label className= 'align'></label>                
+                    <TextField               
+                        type='text'
+                        placeholder= '# of Attendees'    
+                        onChange= {handleChanges}
+                        name= 'numberOfAttendees'
+                        value= {classtributes.numberOfAttendees}
+                    />                
             </div>
             <div>
-                <label className= 'align'>Intensity: </label>
-                <input                 
-                    type='text'
-                    placeholder= 'Intensity Level'    
-                    onChange= {handleChanges}
-                    name= 'intensityLevel'
-                    value= {classtributes.intensityLevel}
-                />
-            </div>
-            <div>
-                    <Button variant="contained" color="primary">Submit</Button>
+                <Button 
+                    variant="contained" 
+                    color="primary"
+                    type="submit"
+                    >Submit
+                </Button>
+                    
 
                 {/* <button className= "submitButton" type= "submit"> </button> */}
             </div>
