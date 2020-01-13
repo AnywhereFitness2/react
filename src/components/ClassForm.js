@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField'
+import styled, {css} from 'styled-components';
 import axios from 'axios';
+
+
+
+
 
 
 
@@ -24,7 +29,7 @@ export default function ClassForm () {
     }
     return (
         <form onSubmit={onSubmit} >
-           
+           <section className= 'classForm'>
             <div className= 'name'  >           
                 <label className= 'align'></label>                           
                     <TextField      
@@ -128,13 +133,14 @@ export default function ClassForm () {
             </div>
             <div>
                 <br></br>
-                <Button 
+                <Button className= 'btm-button' 
                     variant="contained" 
                     color="primary"
                     type="submit"
                     >Submit
                 </Button>       
             </div>
+        </section>
         </form>
             )
         }
