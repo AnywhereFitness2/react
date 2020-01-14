@@ -29,32 +29,12 @@ const Register = props => {
   const handleSubmit = e => {
     e.preventDefault();
     axios
-      .post("https://anywhere-fitness-be.herokuapp.com//api/auth/register", {
+      .post("https://anywhere-fitness-be.herokuapp.com/api/auth/register", {
         username: userInfo.username,
-        password: userInfo.password,
-        roleId: userInfo.roleId
+        password: userInfo.password
       })
+      .then(res => console.log(res))
 
-      .then(response => {
-        axios
-          .post("https://anywhere-fitness-be.herokuapp.com//api/auth/login", {
-            username: userInfo.username,
-            password: userInfo.password,
-            roleId: userInfo.roleId
-          })
-          .then(loginResponse => {
-            sessionStorage.setItem("token", loginResponse.data.token);
-            sessionStorage.setItem("roleId", loginResponse.data.user.roleId);
-
-            props.addUser(loginResponse.data.user);
-
-            if (loginResponse.data.user.roleId === 1) {
-              history.push("/instructor");
-            } else if (loginResponse.data.user.roleId === 2) {
-              history.push("/client");
-            }
-          });
-      })
       .catch(response => {
         console.log("Couldn't access database.", response, response.message);
       });
@@ -73,30 +53,6 @@ const Register = props => {
           type='text'
           placeholder='Username'
           value={userInfo.username}
-          onChange={handleChange}
-        />
-
-        <input
-          name='firstName'
-          type='text'
-          placeholder='First name'
-          value={userInfo.firstName}
-          onChange={handleChange}
-        />
-
-        <input
-          name='lastName'
-          type='text'
-          placeholder='Last name'
-          value={userInfo.lastName}
-          onChange={handleChange}
-        />
-
-        <input
-          name='email'
-          type='email'
-          placeholder='Email'
-          value={userInfo.email}
           onChange={handleChange}
         />
 

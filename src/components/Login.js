@@ -30,7 +30,6 @@ const LoginForm = props => {
       })
       .then(loginResponse => {
         localStorage.setItem("token", loginResponse.data.token);
-        localStorage.setItem("roleId", loginResponse.data.user.roleId);
         props.addUser(loginResponse.data.user);
 
         if (loginResponse.data.user.roleId === 1) {

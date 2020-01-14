@@ -16,8 +16,13 @@ export const FETCH_FAILURE = "FETCH_FAILURE";
 export const FETCHCAT_SUCCESS = "FETCHCAT_SUCCESS";
 export const FETCHCLASS_SUCCESS = "FETCHCLASS_SUCCESS";
 
-export const addClass = newClass => {
-  return { type: ADD_CLASS, payload: newClass };
+export const addClass = newClass => dispatch => {
+  axiosWithAuth()
+    .post("/auth/classes", newClass)
+    .then(res => {
+      dispatch({ type: ADD_CLASS, payload: res.data });
+    })
+    .catch(err => console.log(err));
 };
 
 export const scheduleClass = scheduleClass => {
@@ -26,23 +31,22 @@ export const scheduleClass = scheduleClass => {
 export const unscheduleClass = unscheduleClass => {
   return { type: UNSCHEDULE_CLASS, payload: unscheduleClass };
 };
-export const deleteClass = id => {
-  return { type: DELETE_CLASS, payload: id };
-};
-
-export const fetchClasses = () => dispatch => {
-  dispatch({ type: START_FETCHING });
+export const deleteClass = id => dispatch => {
   axiosWithAuth()
-    .get("/api/classes")
+    .delete(`/auth/classes/${id}`)
     .then(res => {
-      console.log(res, "CLASS get");
-      dispatch({ type: FETCHCLASS_SUCCESS, payload: res.data });
+      dispatch({ type: DELETE_CLASS, payload: id });
     })
-    .catch(err => dispatch({ type: FETCH_FAILURE, payload: err.response }));
+    .catch(err => console.log(err));
 };
 
-export const editClass = editClass => {
-  return { type: EDIT_CLASS, payload: editClass };
+export const editClass = editClass => dispatch => {
+  axiosWithAuth()
+    .post(`/auth/classes/${editClass.id}`, editClass)
+    .then(res => {
+      dispatch({ type: EDIT_CLASS, payload: res.data });
+    })
+    .catch(err => console.log(err));
 };
 
 export const logOut = () => {
