@@ -11,3 +11,5 @@ ReactDOM.render(
   </UserProvider>,
   document.getElementById("root")
 );
+
+ReactDOM.render(<App />, document.getElementById("root"));
