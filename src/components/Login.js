@@ -1,63 +1,81 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 
-import { axiosWithAuth } from "../utils/axiosWithAuth";
-import { userContext } from "../contexts/userContext";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { connect } from "react-redux";
 
-const initialLoginState = {
-  username: "",
-  password: ""
-};
+import { addUser } from "../actions/index";
 
-const Login = props => {
-  const { setUser } = useContext(userContext);
-  console.log(setUser);
-  const { loginData, setLoginData } = useState(initialLoginState);
+const LoginForm = props => {
+  const history = useHistory();
+
+  const [userInfo, setUserInfo] = useState({
+    username: "",
+    password: ""
+  });
 
   const handleChange = e => {
-    e.preventDefault();
-    setLoginData({ ...loginData, [e.target.name]: e.target.value });
+    setUserInfo({
+      ...userInfo,
+      [e.target.name]: e.target.value
+    });
   };
-  console.log({ loginData });
-  const handleSubmit = e => {
+
+  const handleLogin = e => {
     e.preventDefault();
-    axiosWithAuth()
-      .post("/api/auth/login", loginData)
-      .then(res => {
-        console.log(res);
-        setUser();
+    axios
+      .post("https://lambda-anywhere-fitness.herokuapp.com/api/auth/login", {
+        username: userInfo.username,
+        password: userInfo.password
       })
-      .catch(error => {
-        console.log("error on login: ", error);
+      .then(loginResponse => {
+        localStorage.setItem("token", loginResponse.data.token);
+        localStorage.setItem("roleId", loginResponse.data.user.roleId);
+        props.addUser(loginResponse.data.user);
+
+        if (loginResponse.data.user.roleId === 1) {
+          history.push("/instructor");
+        } else if (loginResponse.data.user.roleId === 2) {
+          history.push("/client");
+        }
+      })
+      .catch(response => {
+        console.log("Couldn't access database: ", response);
       });
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor='username'>Username</label>
+      <h1>Log in</h1>
+
+      <form name='login' onSubmit={handleLogin}>
         <input
-          onChange={handleChange}
           name='username'
-          id='username'
           type='text'
-          placeholder='username'
-          // value={loginData.username}
-        />
-
-        <label htmlFor='password'>Password</label>
-        <input
+          placeholder='Username'
+          value={userInfo.username}
           onChange={handleChange}
+        />
+        <p className='formError' id='usernameErrors'></p>
+
+        <input
           name='password'
-          id='password'
           type='password'
-          placeholder='password'
-          // value={loginData.password}
+          placeholder='Password'
+          value={userInfo.password}
+          onChange={handleChange}
         />
 
-        <button>Sign In</button>
+        <button type='submit'>Log In</button>
       </form>
     </div>
   );
 };
 
-export default Login;
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect(mapStateToProps, { addUser })(LoginForm);

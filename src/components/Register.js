@@ -1,128 +1,123 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import axios from "axios";
+import { connect } from "react-redux";
 
-import { axiosWithAuth } from "../utils/axiosWithAuth";
-
-const initialUser = {
-  username: "",
-  password: "",
-  first_name: "",
-  last_name: "",
-  city: "",
-  email: "",
-  experience: ""
-};
+import { addUser } from "../actions/index";
 
 const Register = props => {
-  const [registrationData, setRegistrationData] = useState(initialUser);
+  let history = useHistory();
+  const role = props.role;
+
+  const [userInfo, setUserInfo] = useState({
+    username: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    instructorCode: "123",
+    roleId: role === "instructor" ? 1 : 2
+  });
 
   const handleChange = e => {
-    setRegistrationData({
-      ...registrationData,
+    setUserInfo({
+      ...userInfo,
       [e.target.name]: e.target.value
     });
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    axiosWithAuth()
-      .post("/auth/register", registrationData)
-      .then(res => {
-        console.log(res.data);
+    axios
+      .post("https://anywhere-fitness-be.herokuapp.com//api/auth/register", {
+        username: userInfo.username,
+        password: userInfo.password,
+        roleId: userInfo.roleId
       })
-      .catch(err => {
-        console.log(err);
+
+      .then(response => {
+        axios
+          .post("https://anywhere-fitness-be.herokuapp.com//api/auth/login", {
+            username: userInfo.username,
+            password: userInfo.password,
+            roleId: userInfo.roleId
+          })
+          .then(loginResponse => {
+            sessionStorage.setItem("token", loginResponse.data.token);
+            sessionStorage.setItem("roleId", loginResponse.data.user.roleId);
+
+            props.addUser(loginResponse.data.user);
+
+            if (loginResponse.data.user.roleId === 1) {
+              history.push("/instructor");
+            } else if (loginResponse.data.user.roleId === 2) {
+              history.push("/client");
+            }
+          });
+      })
+      .catch(response => {
+        console.log("Couldn't access database.", response, response.message);
       });
   };
 
+  const registerWelcomeText =
+    "Sign up as " + (role === "instructor" ? "an instructor" : "a client");
+
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor='username'>Username</label>
+      <h1>{registerWelcomeText}</h1>
+
+      <form name='login' onSubmit={handleSubmit}>
         <input
-          onChange={handleChange}
-          type='text'
-          id='username'
           name='username'
-          placeholder='username'
-          value={registrationData.username}
-          required
-        />
-
-        <label htmlFor='password'>Password</label>
-        <input
-          onChange={handleChange}
-          type='password'
-          id='password'
-          name='password'
-          placeholder='password'
-          value={registrationData.password}
-          required
-        />
-
-        <label htmlFor='firstName'>First Name</label>
-        <input
-          onChange={handleChange}
           type='text'
-          id='firstName'
-          name='first_name'
-          placeholder='first name'
-          value={registrationData.first_name}
-          required
+          placeholder='Username'
+          value={userInfo.username}
+          onChange={handleChange}
         />
 
-        <label htmlFor='lastName'>Last Name</label>
         <input
-          onChange={handleChange}
+          name='firstName'
           type='text'
-          name='last_name'
-          id='lastName'
-          placeholder='last name'
-          value={registrationData.last_name}
-          required
+          placeholder='First name'
+          value={userInfo.firstName}
+          onChange={handleChange}
         />
 
-        <label htmlFor='city'>City</label>
         <input
-          onChange={handleChange}
+          name='lastName'
           type='text'
-          name='city'
-          id='city'
-          placeholder='city'
-          value={registrationData.city}
-          required
+          placeholder='Last name'
+          value={userInfo.lastName}
+          onChange={handleChange}
         />
 
-        <label htmlFor='email'>Email</label>
         <input
-          onChange={handleChange}
-          type='email'
           name='email'
-          id='email'
-          placeholder='email'
-          value={registrationData.email}
-          required
-        />
-
-        <label htmlFor='level'>Fitness Level</label>
-        <input
+          type='email'
+          placeholder='Email'
+          value={userInfo.email}
           onChange={handleChange}
-          type='level'
-          name='level'
-          id='level'
-          placeholder='fitness level'
-          value={registrationData.email}
-          required
         />
 
-        <button>Submit</button>
-        <button
-          className='loginBtn'
-          onClick={() => setRegistrationData(initialUser)}
-        >
-          Reset
-        </button>
+        <input
+          name='password'
+          type='password'
+          placeholder='Password'
+          value={userInfo.password}
+          onChange={handleChange}
+        />
+
+        <button type='submit'>Sign Up</button>
       </form>
     </div>
   );
 };
-export default Register;
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  };
+};
+
+export default connect(mapStateToProps, { addUser })(Register);
