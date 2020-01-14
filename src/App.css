@@ -27,7 +27,18 @@
 .App-link {
   color: #61dafb;
 }
-
+.classForm {
+  background-color: hsl(338, 42%, 64%);
+  margin: 2% auto;
+  width: 20%;
+  border: 1px solid black;
+  border-radius: 25px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  
+}
+.linkOne {
+  padding: 20%;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

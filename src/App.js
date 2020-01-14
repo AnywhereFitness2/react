@@ -1,24 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+  
+import React from "react";
+import { BrowserRouter as Router, Route, Switch, Link} from "react-router-dom";
+import ClassForm from "./components/ClassForm";
+import Class from "./components/Class";
+import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <Router>
+        <Link className= 'linkOne' to='/classform'>Add a Class</Link>
+        <Link className= 'linkOne' to='/class'>Your classes</Link>
+        <Switch>
+          {/* <Route path='/register' component={Register} /> */}
+          {/* <Route path='/login' component={Login} /> */}
+          <Route path='/classform' component={ClassForm} />
+          <Route path='/class' component= {Class} />
+        </Switch>
+      </Router>
     </div>
   );
 }
