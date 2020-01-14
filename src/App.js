@@ -23,14 +23,14 @@ function App() {
       <Route path='/class' component={Class} />
       <Route
         exact
-        path='/signup/client'
+        path='/register/client'
         render={props => {
           return <Register {...props} role='client' />;
         }}
       />
       <Route
         exact
-        path='/signup/instructor'
+        path='/register/instructor'
         role='instuctor'
         component={Register}
       />
@@ -45,7 +45,7 @@ function App() {
         path='/instructor/createclass'
         component={ClassCreate}
       />
-      <Route component={WelcomePage} />
+      <Route exact path='/' component={WelcomePage} />
     </div>
   );
 }
