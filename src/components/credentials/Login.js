@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 
-import { userContext } from "../contexts/userContext";
-import { axiosWithAuth } from "../utils/axiosWithAuth";
+import { userContext } from "../../contexts/userContext";
+import { axiosWithAuth } from "../../utils/axiosWithAuth";
 
 const Login = props => {
   const { setUserName } = useContext(userContext);

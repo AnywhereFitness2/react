@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 
-import { classContext } from "../contexts/classContext";
-import { axiosWithAuth } from "../utils/axiosWithAuth";
+import { classContext } from "../../contexts/classContext";
+import { axiosWithAuth } from "../../utils/axiosWithAuth";
 
-const initialFormState = {
+const initialClassState = {
   class_title: "",
   class_instructorId: "",
   class_categoryId: "",
@@ -19,7 +19,7 @@ const AddClass = props => {
   const { isEditing, setIsEditing, itemToEdit, setItemToEdit } = useContext(
     classContext
   );
-  const [formData, setFormData] = useState(initialFormState);
+  const [formData, setFormData] = useState(initialClassState);
 
   useEffect(() => {
     if (isEditing) {
@@ -39,7 +39,7 @@ const AddClass = props => {
       axiosWithAuth()
         .put(`auth/classes/${itemToEdit.id}`, formData)
         .then(() => {
-          setFormData(initialFormState);
+          setFormData(initialClassState);
           props.history.push(`/classes/${itemToEdit.id}`);
         })
         .catch(err => {
@@ -49,7 +49,7 @@ const AddClass = props => {
       axiosWithAuth()
         .post("/classes", formData)
         .then(() => {
-          setFormData(initialFormState);
+          setFormData(initialClassState);
           props.history.push("/dashboard");
         })
         .catch(err => {
@@ -117,7 +117,7 @@ const AddClass = props => {
           <button>Submit</button>
           <button
             onClick={() => {
-              setFormData(initialFormState);
+              setFormData(initialClassState);
               setIsEditing(false);
               setItemToEdit({});
             }}
@@ -126,7 +126,7 @@ const AddClass = props => {
           </button>
           <button
             onClick={() => {
-              setFormData(initialFormState);
+              setFormData(initialClassState);
               setIsEditing(false);
               setItemToEdit({});
               props.history.push("/dashboard");
