@@ -1,10 +1,13 @@
 import React, { useState } from "react";
 
-import { axiosWithAuth } from "../utils/axiosWithAuth";
+import { axiosWithAuth } from "../../utils/axiosWithAuth";
 
 const initialUser = {
   username: "",
-  password: ""
+  password: "",
+  firstName: "",
+  lastName: "",
+  email: ""
 };
 
 const Register = props => {
@@ -53,6 +56,17 @@ const Register = props => {
           name='password'
           placeholder='password'
           value={registrationData.password}
+          required
+        />
+
+        <label htmlFor='firstName'>First Name</label>
+        <input
+          onChange={handleChange}
+          type='text'
+          id='firstName'
+          name='firstName'
+          placeholder='first name'
+          value={registrationData.firstName}
           required
         />
 
