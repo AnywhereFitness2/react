@@ -1,123 +1,65 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import axios from "axios";
-import { connect } from "react-redux";
 
-import { addUser } from "../actions/index";
+import { axiosWithAuth } from "../utils/axiosWithAuth";
+
+const initialUser = {
+  username: "",
+  password: ""
+};
 
 const Register = props => {
-  let history = useHistory();
-  const role = props.role;
-
-  const [userInfo, setUserInfo] = useState({
-    username: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    instructorCode: "123",
-    roleId: role === "instructor" ? 1 : 2
-  });
+  const [registrationData, setRegistrationData] = useState(initialUser);
 
   const handleChange = e => {
-    setUserInfo({
-      ...userInfo,
+    setRegistrationData({
+      ...registrationData,
       [e.target.name]: e.target.value
     });
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    axios
-      .post("https://anywhere-fitness-be.herokuapp.com//api/auth/register", {
-        username: userInfo.username,
-        password: userInfo.password,
-        roleId: userInfo.roleId
+    axiosWithAuth()
+      .post("/auth/register", registrationData)
+      .then(res => {
+        setRegistrationData(initialUser);
+        props.history.push("/login");
       })
-
-      .then(response => {
-        axios
-          .post("https://anywhere-fitness-be.herokuapp.com//api/auth/login", {
-            username: userInfo.username,
-            password: userInfo.password,
-            roleId: userInfo.roleId
-          })
-          .then(loginResponse => {
-            sessionStorage.setItem("token", loginResponse.data.token);
-            sessionStorage.setItem("roleId", loginResponse.data.user.roleId);
-
-            props.addUser(loginResponse.data.user);
-
-            if (loginResponse.data.user.roleId === 1) {
-              history.push("/instructor");
-            } else if (loginResponse.data.user.roleId === 2) {
-              history.push("/client");
-            }
-          });
-      })
-      .catch(response => {
-        console.log("Couldn't access database.", response, response.message);
+      .catch(err => {
+        console.log(err);
       });
   };
 
-  const registerWelcomeText =
-    "Sign up as " + (role === "instructor" ? "an instructor" : "a client");
-
   return (
     <div>
-      <h1>{registerWelcomeText}</h1>
-
-      <form name='login' onSubmit={handleSubmit}>
+      <h2>Register Below</h2>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor='username'>Username</label>
         <input
+          onChange={handleChange}
+          type='text'
+          id='username'
           name='username'
-          type='text'
-          placeholder='Username'
-          value={userInfo.username}
-          onChange={handleChange}
+          placeholder='username'
+          value={registrationData.username}
+          required
         />
 
+        <label htmlFor='password'>Password</label>
         <input
-          name='firstName'
-          type='text'
-          placeholder='First name'
-          value={userInfo.firstName}
           onChange={handleChange}
-        />
-
-        <input
-          name='lastName'
-          type='text'
-          placeholder='Last name'
-          value={userInfo.lastName}
-          onChange={handleChange}
-        />
-
-        <input
-          name='email'
-          type='email'
-          placeholder='Email'
-          value={userInfo.email}
-          onChange={handleChange}
-        />
-
-        <input
-          name='password'
           type='password'
-          placeholder='Password'
-          value={userInfo.password}
-          onChange={handleChange}
+          id='password'
+          name='password'
+          placeholder='password'
+          value={registrationData.password}
+          required
         />
 
-        <button type='submit'>Sign Up</button>
+        <button>Submit</button>
+        <button onClick={() => setRegistrationData(initialUser)}>Reset</button>
       </form>
     </div>
   );
 };
-
-const mapStateToProps = state => {
-  return {
-    user: state.user
-  };
-};
-
-export default connect(mapStateToProps, { addUser })(Register);
+export default Register;
