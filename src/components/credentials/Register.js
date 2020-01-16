@@ -59,17 +59,6 @@ const Register = props => {
           required
         />
 
-        <label htmlFor='firstName'>First Name</label>
-        <input
-          onChange={handleChange}
-          type='text'
-          id='firstName'
-          name='firstName'
-          placeholder='first name'
-          value={registrationData.firstName}
-          required
-        />
-
         <button>Submit</button>
         <button onClick={() => setRegistrationData(initialUser)}>Reset</button>
       </form>

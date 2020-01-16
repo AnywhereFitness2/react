@@ -4,7 +4,7 @@ import { userContext } from "../../contexts/userContext";
 import { axiosWithAuth } from "../../utils/axiosWithAuth";
 
 const Login = props => {
-  const { setUserName } = useContext(userContext);
+  const { setUser } = useContext(userContext);
   const [credentials, setCredentials] = useState({
     username: "",
     password: ""
@@ -23,7 +23,7 @@ const Login = props => {
       .post("/auth/login", credentials)
       .then(result => {
         localStorage.setItem("token", result.data.payload);
-        setUserName(credentials.username);
+        setUser(credentials.username);
         props.history.push("/dashboard");
       })
       .catch(error => console.log(error));
